@@ -1,0 +1,171 @@
+= ALI
+
+image:https://img.shields.io/gem/v/ali.svg["Gem Version", link="https://rubygems.org/gems/ali"]
+image:https://github.com/lutaml/ali/workflows/rake/badge.svg["Build Status", link="https://github.com/lutaml/ali/actions?workflow=rake"]
+image:https://codeclimate.com/github/lutaml/ali/badges/gpa.svg["Code Climate", link="https://codeclimate.com/github/lutaml/ali"]
+
+== Purpose
+
+This Ruby gem implements the
+https://www.niso.org/schemas/ali/1.0[NISO Access and License Indicators (ALI) Schemas].
+
+Specification:
+
+* https://www.niso.org/publications/rp-22-2021-ali[NISO RP 22-2021]
+
+It can be used to parse and generate ALI XML and JSON files.
+
+NOTE: NISO ALI is used by the NISO JATS standard to indicate the access and
+license information of a document.
+
+NOTE: The `ali` gem is used by the `niso-jats` gem to parse and generate ALI
+files in the context of JATS documents.
+
+
+== Installation
+
+To install the `ali` gem, use one of the following methods.
+
+Add this line to your application's Gemfile:
+
+[source,ruby]
+----
+gem 'ali'
+----
+
+Then execute:
+
+[source,sh]
+----
+$ bundle install
+----
+
+Or install it directly using:
+
+[source,sh]
+----
+$ gem install ali
+----
+
+After installation, you can start using the ali gem in your Ruby projects
+or via the command-line interface.
+
+
+
+== API
+
+=== General
+
+The gem provides the following classes:
+
+* `Ali::FreeToRead`:: Represents the `free_to_read` element.
+* `Ali::License`:: Represents the `license` element.
+* `Ali::Container`:: Represents the root element of the ALI document. (Applies to JSON only)
+
+=== Differences between XML and JSON usage of ALI
+
+Notice that the XML usage and JSON usage of ALI differs:
+
+XML:: The `free_to_read` and `license` elements are directly incorporated into
+an XML document that is defined by an external schema. ALI itself does not
+define any root container.
+
+JSON-LD:: The `free_to_read` and `license` elements are contained in a JSON
+object under the JSON-LD context defined in ALI. In the `ali` gem, the
+`Ali::Container` class is used to represent the root element of the ALI
+document.
+
+=== Usage with XML
+
+When parsing ALI in XML, you need to incorporate the ALI element
+classes in the context of the XML document.
+
+[example]
+====
+Usage of ALI elements in XML is not contained in a particular element.
+
+[source,xml]
+----
+<external-document ...>
+  <!-- other elements -->
+  <free_to_read xmlns="http://www.niso.org/schemas/ali/1.0/"
+    start_date="2014-01-01" end_date="2014-12-31"/>
+  <license_ref xmlns="http://www.niso.org/schemas/ali/1.0/"
+    start_date="2015-02-03">
+    http://www.examplesite.org/open_license.html
+  </license_ref>
+  <!-- other elements -->
+</external-document>
+----
+====
+
+.Usage with XML
+[source,ruby]
+----
+> require 'ali'
+> xml = '<free_to_read xmlns="http://www.niso.org/schemas/ali/1.0/" start_date="2014-01-01"
+end_date="2014-12-31"/>'
+> free_to_read = Ali::FreeToRead.from_xml(xml)
+> free_to_read.start_date
+# => "2014-01-01"
+> free_to_read.end_date
+# => "2014-12-31"
+----
+
+=== Usage with JSON
+
+When parsing ALI in JSON, you need to use the `Ali::Container` class to
+parse the root element of the ALI object.
+
+[example]
+====
+Usage of ALI in JSON-LD is contained in an JSON object.
+
+[source,json]
+----
+{
+  "@context": "http://www.niso.org/schemas/ali/1.0.1/jsonld.json",
+  "free_to_read": {
+    "start_date": "2014-01-01",
+    "end_date": "2014-12-31"
+  },
+  "license_ref": {
+    "start_date": "2014-04-04",
+    "uri": "http://creativecommons.org/licenses/by/3.0/"
+  }
+}
+----
+====
+
+.Usage with JSON
+[source,ruby]
+----
+> require 'ali'
+> json = '{"free_to_read": {"start_date": "2014-01-01", "end_date": "2014-12-31"}}'
+> container = Ali::Container.from_json(json)
+> free_to_read = container.free_to_read
+> free_to_read.start_date
+# => "2014-01-01"
+> free_to_read.end_date
+# => "2014-12-31"
+----
+
+
+== Tests
+
+The `spec/fixtures` folder tests the library against known examples of ALI.
+
+Including:
+
+`spec/fixtures/json`:: JSON examples from
+https://www.niso.org/publications/rp-22-2021-ali[NISO RP 22-2021], A.4.
+
+`spec/fixtures/xml`:: XML examples from
+https://www.niso.org/publications/rp-22-2021-ali[NISO RP 22-2021], A.1.
+
+
+== License
+
+Copyright Ribose.
+
+BSD-3 license.

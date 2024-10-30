@@ -1,0 +1,7 @@
+<free_to_read
+xmlns="http://www.niso.org/schemas/ali/1.0/"
+start_date="2014-01-01" end_date="2014-12-31"/>
+<license_ref
+xmlns=http://www.niso.org/schemas/ali/1.0/
+applies_to="http://www.examplesite.org/licenses"
+>http://www.examplesite.org/open_license.html</license_ref>
