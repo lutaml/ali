@@ -1,14 +1,13 @@
 # frozen_string_literal: true
 
-require_relative "ali/version"
 require "lutaml/model"
 
 module Ali
   class Error < StandardError; end
 
-  # Your code goes here...
+  autoload :FreeToRead, "ali/free_to_read"
+  autoload :LicenseRef, "ali/license_ref"
+  autoload :Container, "ali/container"
+  autoload :Namespace, "ali/namespace"
+  autoload :Version, "ali/version"
 end
-
-require_relative "ali/free_to_read"
-require_relative "ali/license_ref"
-require_relative "ali/container"

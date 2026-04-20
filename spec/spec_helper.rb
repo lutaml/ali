@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
-require "ali"
-require "nokogiri"
-require "xml-c14n"
+require_relative "../lib/ali"
+require "rspec/matchers"
+require "canon"
+require "canon/rspec_matchers"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -16,13 +17,15 @@ RSpec.configure do |config|
   end
 end
 
-require "lutaml/model"
-require "lutaml/model/xml_adapter/nokogiri_adapter"
-require "lutaml/model/json_adapter/standard_json_adapter"
-require "lutaml/model/yaml_adapter/standard_yaml_adapter"
-
 Lutaml::Model::Config.configure do |config|
-  config.xml_adapter = Lutaml::Model::XmlAdapter::NokogiriAdapter
-  config.json_adapter = Lutaml::Model::JsonAdapter::StandardJsonAdapter
-  config.yaml_adapter = Lutaml::Model::YamlAdapter::StandardYamlAdapter
+  config.xml_adapter_type = :nokogiri
+end
+
+Canon::RSpecMatchers.configure do |config|
+  # Use spec_friendly profile which ignores comments and formatting differences
+  # that don't affect semantic equivalence
+  config.xml_match_profile = :spec_friendly
+
+  # Only show normative (semantically significant) diffs, hide informational
+  # config.diff_mode = :normative
 end
