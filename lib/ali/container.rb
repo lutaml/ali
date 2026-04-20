@@ -9,14 +9,14 @@ module Ali
     attribute :license_ref, LicenseRef, collection: true
 
     xml do
-      root "ali-container"
-      namespace "http://www.niso.org/schemas/ali/1.0/"
+      element "ali-container"
+      namespace Namespace
 
       map_element "free_to_read", to: :free_to_read
       map_element "license_ref", to: :license_ref
     end
 
-    json do
+    key_value do
       map "free_to_read", to: :free_to_read
       map "license_ref", to: :license_ref
     end

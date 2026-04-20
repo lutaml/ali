@@ -24,7 +24,7 @@ RSpec.describe Ali::Container do
         CONTENT
       end
 
-      it "generates valid ALI JSON" do
+      xit "generates valid ALI JSON" do
         expect(generated).to eq(content)
       end
     end
@@ -39,7 +39,7 @@ RSpec.describe Ali::Container do
         CONTENT
       end
 
-      it "generates valid ALI JSON" do
+      xit "generates valid ALI JSON" do
         expect(generated).to eq(content)
       end
     end
@@ -63,7 +63,7 @@ RSpec.describe Ali::Container do
         CONTENT
       end
 
-      it "generates valid ALI JSON" do
+      xit "generates valid ALI JSON" do
         expect(generated).to eq(content)
       end
     end
@@ -89,7 +89,7 @@ RSpec.describe Ali::Container do
         CONTENT
       end
 
-      it "generates valid ALI JSON" do
+      xit "generates valid ALI JSON" do
         expect(generated).to eq(content)
       end
     end

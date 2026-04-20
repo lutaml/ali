@@ -7,15 +7,15 @@ module Ali
     attribute :uri, :string
 
     xml do
-      root "license_ref"
-      namespace "http://www.niso.org/schemas/ali/1.0/"
+      element "license_ref"
+      namespace Namespace
 
       map_attribute "start_date", to: :start_date
       map_attribute "applies_to", to: :applies_to
       map_content to: :uri
     end
 
-    json do
+    key_value do
       map "start_date", to: :start_date
       map "applies_to", to: :applies_to
       map "uri", to: :uri
